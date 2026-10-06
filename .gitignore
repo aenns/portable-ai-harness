@@ -1,0 +1,43 @@
+# Local credentials; keep only synthetic examples
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies and caches
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# Generated output
+dist/
+build/
+coverage/
+htmlcov/
+.vitepress/cache/
+.vitepress/dist/
+playwright-report/
+test-results/
+*.log
+
+# Local harness output
+.ai/local/
+
+# Terraform local data and sensitive artifacts
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Machine-specific files
+.DS_Store
