@@ -3,7 +3,7 @@
 Scope version: 1  
 Decision date: 7 October 2026  
 Owner: Adrian Enns  
-Status: scope agreed in conversation; repository recording pending.
+Status: approved scope recorded and merged at commit 96cc799.
 
 This checkpoint supplements the RelayCart Step-by-Step Build Guide. Where the guide still limits the harness to read-only model consultation or recommends promoting milestones immediately, this approved contract takes precedence. It adds reviewed direct-model patch application and defers stable promotion/public announcements until development use and portfolio readiness are validated. Application implementation and the rest of Step 03 remain incomplete.
 
@@ -91,7 +91,7 @@ Unattended agents, multi-agent orchestration, MCP mutations/execution, plugin ma
 - Adrian has agreed this first-release scope in conversation: PASS.
 - Code/test implementation routes, Git checkpoints, standards and read-only MCP boundary are explicit: PASS for design only.
 - Dogfooding and controlled improvement/release policy are explicit: PASS for design only.
-- Scope recorded, reviewed and merged into the Git repository: PENDING.
+- Scope recorded, reviewed and merged into the Git repository: PASS (commit 96cc799).
 - No implementation, compatibility test, release or deployment is claimed complete.
 
 After this document is recorded in the harness repo, continue Step 03B: architecture, configuration/tool interfaces, acceptance specifications and ownership across repositories. Step 03C validates/merges the complete design checkpoint before Step 04 implementation.
