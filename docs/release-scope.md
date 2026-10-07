@@ -1,11 +1,11 @@
 # Step 03A — Approved first-release scope
 
-Scope version: 1  
-Decision date: 7 October 2026  
-Owner: Adrian Enns  
+Scope version: 1
+Decision date: 7 October 2026
+Owner: Adrian Enns
 Status: approved scope recorded and merged at commit 96cc799.
 
-This checkpoint supplements the RelayCart Step-by-Step Build Guide. Where the guide still limits the harness to read-only model consultation or recommends promoting milestones immediately, this approved contract takes precedence. It adds reviewed direct-model patch application and defers stable promotion/public announcements until development use and portfolio readiness are validated. Application implementation and the rest of Step 03 remain incomplete.
+This checkpoint supplements the RelayCart Step-by-Step Build Guide. Where the guide still limits the harness to read-only model consultation or recommends promoting milestones immediately, this approved contract takes precedence. It adds reviewed direct-model patch application and defers stable promotion/public announcements until development use and portfolio readiness are validated. Application implementation has not started. The completed Step 03 design review is recorded separately in RelayCart's design checkpoint.
 
 ## Product purpose
 
