@@ -3,7 +3,7 @@
 Design revision: 2
 Checkpoint: Step 03B, section 2
 Date: 7 October 2026
-Status: proposed contracts for review; commands and schema are not implemented yet.
+Status: approved design contracts; commands and schema are not implemented yet.
 
 Read this with [release-scope.md](release-scope.md) and [architecture.md](architecture.md). The architecture was merged at commit `40476cf`. This document adds configurable feature documentation to that design. Examples are intended test fixtures, not configuration that can be run today. Generated JSON Schema and exact CLI help will become authoritative when implemented and tested.
 

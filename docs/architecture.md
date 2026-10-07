@@ -1,11 +1,11 @@
 # Portable AI Harness — Architecture and core interfaces
 
-Design revision: 1  
-Checkpoint: Step 03B, section 1  
-Date: 7 October 2026  
-Status: proposed architecture for review; no implementation claims.
+Design revision: 1
+Checkpoint: Step 03B, section 1
+Date: 7 October 2026
+Status: approved design baseline; no implementation claims.
 
-The approved first-release contract is [release-scope.md](release-scope.md), merged into main at commit `96cc799`. This document defines the harness boundary and shared interfaces. Exact schemas, CLI signatures and the wider RelayCart architecture are subsequent Step 03B sections.
+The approved first-release contract is [release-scope.md](release-scope.md), merged into main at commit `96cc799`. This document defines the harness boundary and shared interfaces. The configuration/command design is recorded in configuration-and-commands.md; RelayCart's system design is recorded in relaycart-docs. Generated schemas and exact executable CLI help remain implementation work.
 
 ## Architecture decision
 
