@@ -2,7 +2,7 @@
 
 ## Status
 
-Design baseline approved. Implementation has not started; no functioning features, pipelines, releases or deployments are claimed.
+Step 04A package/CLI source and tests are present for local validation. Only help and installed version reporting are implemented. Mac acceptance is recorded in progress/checkpoints.md; no working configuration/tasks/models/MCP, CI pipelines, stable release or cloud deployment is claimed.
 
 ## Purpose
 
