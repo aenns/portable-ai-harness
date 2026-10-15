@@ -18,10 +18,11 @@ See [product scope](docs/product.md), [contributing](CONTRIBUTING.md) and [check
 - [relaycart-infra](https://github.com/aenns/relaycart-infra)
 - [relaycart-docs](https://github.com/aenns/relaycart-docs)
 
-## Step 04A development quickstart
+## Development quickstart
 
-The development source now provides CLI help and installed version reporting.
-Version 0.1.0.dev0 is a local development package, not a published stable release.
-See [quickstart](docs/quickstart.md) for locked setup, tests, building and isolated
-wheel installation. Configuration, task execution, model adapters and MCP are
-planned subsequent increments. Mac validation is recorded in progress/checkpoints.md.
+The development source provides CLI help/version, safe project initialization,
+configuration validation and generated structural JSON Schema. Version 0.1.0.dev1
+is an unpublished development identity. See [quickstart](docs/quickstart.md) for
+locked setup, tests, discovery/preview examples, limitations and isolated package
+installation. Task execution, model adapters and MCP follow later. Actual Mac
+validation is recorded in progress/checkpoints.md.

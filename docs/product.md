@@ -2,7 +2,7 @@
 
 ## Status
 
-Step 04A package/CLI source and tests are present for local validation. Only help and installed version reporting are implemented. Mac acceptance is recorded in progress/checkpoints.md; no working configuration/tasks/models/MCP, CI pipelines, stable release or cloud deployment is claimed.
+Step 04B adds strict project configuration/schema, bounded Python/uv and Node discovery, preview and create-only initialization to the existing CLI. Mac validation is recorded in progress/checkpoints.md. Configuration data for future tasks/models/MCP does not implement or authorize those features; CI, stable release and cloud deployment remain future work.
 
 ## Purpose
 

@@ -17,8 +17,9 @@ def test_help_lists_only_implemented_commands(args):
     result = runner.invoke(cli.app, args)
     assert result.exit_code == 0
     assert "version" in result.stdout
-    assert "Step 04A" in result.stdout
-    assert "init" not in result.stdout
+    assert "Safe project" in result.stdout
+    assert "init" in result.stdout
+    assert "config" in result.stdout
 
 
 def test_version_option_uses_installed_metadata():

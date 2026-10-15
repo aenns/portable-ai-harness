@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "portable-ai-harness"
-version = "0.1.0.dev0"
+version = "0.1.0.dev1"
 description = "Portable, configurable development tools with shared CLI and MCP services."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 authors = [{name = "Adrian Enns"}]
-dependencies = ["typer>=0.16,<1"]
+dependencies = ["typer>=0.16,<1", "pydantic>=2.11,<3"]
 
 [project.urls]
 Repository = "https://github.com/aenns/portable-ai-harness"
@@ -19,7 +19,7 @@ Repository = "https://github.com/aenns/portable-ai-harness"
 pah = "portable_ai_harness.cli:app"
 
 [dependency-groups]
-dev = ["pytest>=8,<10", "ruff>=0.12,<1"]
+dev = ["pytest>=8,<10", "ruff>=0.12,<1", "jsonschema>=4.23,<5"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/portable_ai_harness"]
