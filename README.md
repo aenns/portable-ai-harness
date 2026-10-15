@@ -17,3 +17,11 @@ See [product scope](docs/product.md), [contributing](CONTRIBUTING.md) and [check
 - [relaycart-contracts](https://github.com/aenns/relaycart-contracts)
 - [relaycart-infra](https://github.com/aenns/relaycart-infra)
 - [relaycart-docs](https://github.com/aenns/relaycart-docs)
+
+## Step 04A development quickstart
+
+The development source now provides CLI help and installed version reporting.
+Version 0.1.0.dev0 is a local development package, not a published stable release.
+See [quickstart](docs/quickstart.md) for locked setup, tests, building and isolated
+wheel installation. Configuration, task execution, model adapters and MCP are
+planned subsequent increments. Mac validation is recorded in progress/checkpoints.md.

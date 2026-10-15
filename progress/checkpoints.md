@@ -35,3 +35,16 @@ Approved design sources:
 - [Amendment](../docs/mcp-scope-amendment.md) defines precedence and acceptance; Step 03's completed checkpoint remains valid.
 - Implementation and compatibility evidence: NOT STARTED; design approval is not a test result.
 - Publication is evidenced by this change's merged PR and clean main verification.
+
+## Step 04A — package and CLI foundation
+
+Date: 15 October 2026
+Status: PASS for local Mac validation; publication is evidenced by the containing merged PR.
+
+- Shared transport-independent version service and Typer CLI provide help/version/JSON.
+- Product version is read from installed distribution metadata, not duplicated in code.
+- Unit/CLI tests, locked development dependencies and isolated wheel-install smoke check are included.
+- Linux Python 3.12 validation was performed during preparation; it is not Mac compatibility evidence.
+- Required Mac checks: uv sync --locked; CLI help/version/JSON; Ruff lint/format; pytest; uv build; scripts/smoke_install.py.
+- Supplied Mac results: Ruff lint PASS; formatting PASS; 13 tests PASS; wheel/sdist build PASS; isolated wheel-install smoke check PASS.
+- Later configuration, execution, models, MCP and CI/release work remain unimplemented.
