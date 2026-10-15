@@ -20,9 +20,10 @@ See [product scope](docs/product.md), [contributing](CONTRIBUTING.md) and [check
 
 ## Development quickstart
 
-The development source provides CLI help/version, safe project initialization,
-configuration validation and generated structural JSON Schema. Version 0.1.0.dev1
-is an unpublished development identity. See [quickstart](docs/quickstart.md) for
-locked setup, tests, discovery/preview examples, limitations and isolated package
-installation. Task execution, model adapters and MCP follow later. Actual Mac
-validation is recorded in progress/checkpoints.md.
+The development source provides help/version, safe initialization/configuration,
+prerequisite inspection, bounded named tasks/checks and local outcome reports.
+Version 0.1.0.dev2 is an unpublished development identity. See
+[quickstart](docs/quickstart.md) for setup, previews, tests and actual boundaries.
+Model integration, MCP, feature workflows and wider release CI follow later.
+Windows, macOS and Linux are first-release targets; native acceptance CI must pass.
+See [portability](docs/portability.md) and progress/checkpoints.md for evidence. Token budgets remain optional and off by default.

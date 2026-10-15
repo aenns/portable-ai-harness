@@ -2,7 +2,7 @@
 
 ## Status
 
-Step 04B adds strict project configuration/schema, bounded Python/uv and Node discovery, preview and create-only initialization to the existing CLI. Mac validation is recorded in progress/checkpoints.md. Configuration data for future tasks/models/MCP does not implement or authorize those features; CI, stable release and cloud deployment remain future work.
+Step 04C adds prerequisite inspection, reviewed named task/check execution with output/time bounds and local outcome reports to the existing configuration/CLI. Mac evidence is recorded in progress/checkpoints.md. Services, feature/model workflows, MCP, CI, stable release and cloud deployment remain future work. Optional token budgets remain disabled unless explicitly configured.
 
 ## Purpose
 

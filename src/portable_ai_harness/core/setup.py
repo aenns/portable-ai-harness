@@ -38,7 +38,9 @@ def safe_path(root: Path, relative: str) -> Path:
     path = root
     for part in Path(relative).parts:
         path = path / part
-        if path.is_symlink():
+        if path.is_symlink() or (
+            path.exists() and getattr(path.lstat(), "st_file_attributes", 0) & 0x400
+        ):
             raise SetupError("Symlink paths are denied during configuration/setup", 3)
     if not path.resolve().is_relative_to(root):
         raise SetupError("Path escapes the selected workspace", 3)
@@ -49,6 +51,15 @@ def read_data(root: Path, relative: str, *, optional: bool = False) -> bytes | N
     path = safe_path(root, relative)
     try:
         # Final-component no-follow plus ancestor checks; no metadata is executed/imported.
+        if os.name == "nt":
+            from portable_ai_harness.core.windows import open_stream, pinned_directory
+
+            with pinned_directory(root, Path(relative).parts[:-1]) as directory:
+                with open_stream(directory / path.name) as stream:
+                    data = stream.read(MAX_METADATA_BYTES + 1)
+            if len(data) > MAX_METADATA_BYTES:
+                raise SetupError("Configuration/metadata exceeds the 128000-byte limit", 3)
+            return data
         fd = os.open(
             path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
         )
@@ -267,8 +278,8 @@ def prepare_init(
             )
             break
     notes.append(
-        "Only project.json is created; "
-        "packs, lockfile, task execution, models and MCP follow later."
+        "Only project.json is created; init never executes tasks. "
+        "Packs/lockfile, models and MCP follow later."
     )
     return InitProposal(root, config.model_dump_json(indent=2) + "\n", False, tuple(notes))
 
@@ -277,10 +288,10 @@ def write_init(proposal: InitProposal) -> bool:
     """Create reviewed bytes after CLI confirmation; MCP approval is future work."""
     if proposal.existing:
         return False
+    if os.name == "nt":
+        return _windows_init(proposal)
     if os.name != "posix":
-        raise SetupError(
-            "Safe init writes currently require macOS/Linux; preview remains available", 4
-        )
+        raise SetupError("Initialization requires Windows, macOS or Linux", 4)
     validate(proposal.root, parse_json(proposal.text.encode("utf-8")))
     safe_path(proposal.root, CONFIG_PATH)
     flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
@@ -319,4 +330,28 @@ def write_init(proposal: InitProposal) -> bool:
         ) from exc
     finally:
         os.close(root_fd)
+    return True
+
+
+def _windows_init(proposal: InitProposal) -> bool:
+    from portable_ai_harness.core.windows import open_stream, pinned_directory
+
+    validate(proposal.root, parse_json(proposal.text.encode("utf-8")))
+    safe_path(proposal.root, CONFIG_PATH)
+    try:
+        with pinned_directory(proposal.root, (".ai",), create=True) as directory:
+            temporary = directory / f".pah-init-{uuid4().hex}.tmp"
+            try:
+                with open_stream(temporary, create=True) as stream:
+                    stream.write(proposal.text.encode("utf-8"))
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                # Windows rename fails if destination exists; never use replace().
+                os.rename(temporary, directory / "project.json")
+            finally:
+                temporary.unlink(missing_ok=True)
+    except OSError as exc:
+        raise SetupError(
+            "Configuration was not replaced; inspect .ai and rerun preview", 3
+        ) from exc
     return True
