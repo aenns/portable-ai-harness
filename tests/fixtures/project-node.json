@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "project": "example-typescript-project",
+  "workspace_root": ".",
+  "profiles": [
+    "node"
+  ],
+  "exclude": [
+    ".env",
+    ".env.*",
+    ".git",
+    "node_modules",
+    ".ai/local",
+    "*.tfstate",
+    "*.tfplan"
+  ],
+  "instructions": {
+    "paths": [
+      "CONTRIBUTING.md",
+      "docs/architecture.md"
+    ],
+    "default_pack": "base"
+  },
+  "context_limits": {
+    "max_file_bytes": 32000,
+    "max_total_bytes": 128000,
+    "input_token_budget": 6000,
+    "output_token_budget": 1500
+  },
+  "model": {
+    "default_profile": null,
+    "profiles": {
+      "offline-demo": {
+        "adapter": "fake",
+        "model": "deterministic-v1",
+        "timeout_seconds": 30
+      },
+      "local": {
+        "adapter": "ollama",
+        "model": "REPLACE_WITH_INSTALLED_MODEL",
+        "endpoint": "http://localhost:11434",
+        "timeout_seconds": 90
+      }
+    }
+  },
+  "tasks": {
+    "lint": {
+      "argv": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-check"
+    },
+    "types": {
+      "argv": [
+        "npm",
+        "run",
+        "types"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-check"
+    },
+    "test": {
+      "argv": [
+        "npm",
+        "run",
+        "test",
+        "--",
+        "--run"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-check"
+    },
+    "build": {
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 180,
+      "side_effect": "local-build"
+    },
+    "dev": {
+      "argv": [
+        "npm",
+        "run",
+        "dev"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 30,
+      "side_effect": "local-service",
+      "lifecycle": "service"
+    }
+  },
+  "check_policy": {
+    "required": [
+      "lint",
+      "types",
+      "test",
+      "build"
+    ],
+    "optional": []
+  },
+  "git_checkpoint": {
+    "mode": "ask-if-dirty"
+  },
+  "documentation": {
+    "mode": "suggest",
+    "feature_output": "docs/features",
+    "changelog": "CHANGELOG.md"
+  },
+  "mcp": {
+    "enabled": false,
+    "tool_set": "read-only"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "project": "portable-ai-harness",
+  "workspace_root": ".",
+  "profiles": [
+    "python"
+  ],
+  "exclude": [
+    ".env",
+    ".env.*",
+    ".git",
+    ".venv",
+    "node_modules",
+    ".ai/local",
+    "*.tfstate",
+    "*.tfplan"
+  ],
+  "instructions": {
+    "paths": [],
+    "default_pack": "base"
+  },
+  "context_limits": {
+    "max_file_bytes": 32000,
+    "max_total_bytes": 128000,
+    "input_token_budget": null,
+    "output_token_budget": null
+  },
+  "model": {
+    "default_profile": null,
+    "profiles": {}
+  },
+  "tasks": {
+    "lint": {
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-check",
+      "lifecycle": "task"
+    },
+    "test": {
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-check",
+      "lifecycle": "task"
+    },
+    "build": {
+      "argv": [
+        "uv",
+        "build"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120,
+      "side_effect": "local-build",
+      "lifecycle": "task"
+    }
+  },
+  "check_policy": {
+    "required": [
+      "lint",
+      "test",
+      "build"
+    ],
+    "optional": []
+  },
+  "git_checkpoint": {
+    "mode": "ask-if-dirty"
+  },
+  "documentation": {
+    "mode": "suggest",
+    "feature_output": "docs/features",
+    "changelog": "CHANGELOG.md"
+  },
+  "mcp": {
+    "enabled": false,
+    "tool_set": "read-only"
+  }
+}

@@ -54,7 +54,20 @@ def main() -> None:
         invalid = subprocess.run([str(cli), "unknown"], cwd=directory, capture_output=True)
         if invalid.returncode != 2:
             raise RuntimeError("Installed CLI did not reject an unknown command")
-    print("PASS: wheel installed and CLI exercised outside checkout; temporary venv removed.")
+        project = directory / "project"
+        project.mkdir()
+        run(str(cli), "init", "--root", str(project), "--dry-run", cwd=directory)
+        if (project / ".ai").exists():
+            raise RuntimeError("Installed dry run wrote files")
+        run(str(cli), "init", "--root", str(project), "--project", "smoke", "--yes", cwd=directory)
+        manifest = project / ".ai/project.json"
+        before = manifest.read_bytes()
+        run(str(cli), "config", "validate", "--root", str(project), cwd=directory)
+        run(str(cli), "init", "--root", str(project), cwd=directory)
+        if manifest.read_bytes() != before:
+            raise RuntimeError("Installed rerun changed existing configuration")
+        json.loads(run(str(cli), "config", "schema", cwd=directory))
+    print("PASS: installed wheel help/version/init/config outside checkout; temp venv removed.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,398 @@
+{
+  "$defs": {
+    "Checks": {
+      "additionalProperties": false,
+      "properties": {
+        "optional": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Optional",
+          "type": "array"
+        },
+        "required": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Required",
+          "type": "array"
+        }
+      },
+      "title": "Checks",
+      "type": "object"
+    },
+    "ContextLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "input_token_budget": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 10000000,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Token Budget"
+        },
+        "max_file_bytes": {
+          "default": 32000,
+          "exclusiveMinimum": 0,
+          "maximum": 10000000,
+          "title": "Max File Bytes",
+          "type": "integer"
+        },
+        "max_total_bytes": {
+          "default": 128000,
+          "exclusiveMinimum": 0,
+          "maximum": 10000000,
+          "title": "Max Total Bytes",
+          "type": "integer"
+        },
+        "output_token_budget": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 10000000,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Token Budget"
+        }
+      },
+      "title": "ContextLimits",
+      "type": "object"
+    },
+    "Documentation": {
+      "additionalProperties": false,
+      "properties": {
+        "changelog": {
+          "default": "CHANGELOG.md",
+          "title": "Changelog",
+          "type": "string"
+        },
+        "feature_output": {
+          "default": "docs/features",
+          "title": "Feature Output",
+          "type": "string"
+        },
+        "mode": {
+          "default": "suggest",
+          "enum": [
+            "off",
+            "suggest",
+            "update"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "title": "Documentation",
+      "type": "object"
+    },
+    "GitCheckpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "ask-if-dirty",
+          "enum": [
+            "ask-if-dirty",
+            "always",
+            "off"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "title": "GitCheckpoint",
+      "type": "object"
+    },
+    "Instructions": {
+      "additionalProperties": false,
+      "properties": {
+        "default_pack": {
+          "default": "base",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.-]+$",
+          "title": "Default Pack",
+          "type": "string"
+        },
+        "paths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Paths",
+          "type": "array"
+        }
+      },
+      "title": "Instructions",
+      "type": "object"
+    },
+    "MCP": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": false,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "tool_set": {
+          "default": "read-only",
+          "enum": [
+            "read-only",
+            "reviewed"
+          ],
+          "title": "Tool Set",
+          "type": "string"
+        }
+      },
+      "title": "MCP",
+      "type": "object"
+    },
+    "ModelProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "enum": [
+            "fake",
+            "ollama",
+            "openai",
+            "anthropic"
+          ],
+          "title": "Adapter",
+          "type": "string"
+        },
+        "credential_env": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Credential Env"
+        },
+        "endpoint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Endpoint"
+        },
+        "model": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 30,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "adapter",
+        "model"
+      ],
+      "title": "ModelProfile",
+      "type": "object"
+    },
+    "Models": {
+      "additionalProperties": false,
+      "properties": {
+        "default_profile": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default Profile"
+        },
+        "profiles": {
+          "maxProperties": 100,
+          "patternProperties": {
+            "^[A-Za-z0-9_.-]+$": {
+              "$ref": "#/$defs/ModelProfile"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "title": "Profiles",
+          "type": "object"
+        }
+      },
+      "title": "Models",
+      "type": "object"
+    },
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "argv": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Argv",
+          "type": "array"
+        },
+        "cwd": {
+          "default": ".",
+          "title": "Cwd",
+          "type": "string"
+        },
+        "lifecycle": {
+          "default": "task",
+          "enum": [
+            "task",
+            "service"
+          ],
+          "title": "Lifecycle",
+          "type": "string"
+        },
+        "side_effect": {
+          "default": "local-check",
+          "enum": [
+            "local-check",
+            "local-build",
+            "local-service"
+          ],
+          "title": "Side Effect",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 120,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "argv"
+      ],
+      "title": "Task",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Persistable configuration, not proof that configured features are implemented/authorized.",
+  "properties": {
+    "check_policy": {
+      "$ref": "#/$defs/Checks"
+    },
+    "context_limits": {
+      "$ref": "#/$defs/ContextLimits"
+    },
+    "documentation": {
+      "$ref": "#/$defs/Documentation"
+    },
+    "exclude": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Exclude",
+      "type": "array"
+    },
+    "git_checkpoint": {
+      "$ref": "#/$defs/GitCheckpoint"
+    },
+    "instructions": {
+      "$ref": "#/$defs/Instructions"
+    },
+    "mcp": {
+      "$ref": "#/$defs/MCP"
+    },
+    "model": {
+      "$ref": "#/$defs/Models"
+    },
+    "profiles": {
+      "items": {
+        "enum": [
+          "python",
+          "node"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Profiles",
+      "type": "array"
+    },
+    "project": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+$",
+      "title": "Project",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "tasks": {
+      "maxProperties": 100,
+      "patternProperties": {
+        "^[A-Za-z0-9_.-]+$": {
+          "$ref": "#/$defs/Task"
+        }
+      },
+      "propertyNames": {
+        "maxLength": 128,
+        "minLength": 1
+      },
+      "title": "Tasks",
+      "type": "object"
+    },
+    "workspace_root": {
+      "const": ".",
+      "default": ".",
+      "title": "Workspace Root",
+      "type": "string"
+    }
+  },
+  "required": [
+    "project"
+  ],
+  "title": "ProjectConfig",
+  "type": "object"
+}

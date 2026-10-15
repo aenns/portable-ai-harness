@@ -48,3 +48,23 @@ Status: PASS for local Mac validation; publication is evidenced by the containin
 - Required Mac checks: uv sync --locked; CLI help/version/JSON; Ruff lint/format; pytest; uv build; scripts/smoke_install.py.
 - Supplied Mac results: Ruff lint PASS; formatting PASS; 13 tests PASS; wheel/sdist build PASS; isolated wheel-install smoke check PASS.
 - Later configuration, execution, models, MCP and CI/release work remain unimplemented.
+
+## Step 04B — configuration and safe initialization
+
+Date: 15 October 2026
+Status: PASS for local Mac validation; publication is evidenced by the containing merged PR.
+
+- Strict schema-version-one ProjectConfig, generated structural schema and tested cross-field/path rules.
+- Bounded Python/uv and Node metadata discovery; explicit overrides/template precedence; no task execution or toolchain installation.
+- Reviewable dry-run and confirmation; only .ai/project.json is created, never overwritten on rerun.
+- Filesystem fixtures cover symlink/escape/oversize/FIFO denial, concurrent destination creation and preserved existing bytes.
+- Preparation validation: 92 tests, lint/format, wheel/sdist and installed CLI init/config smoke passed on Linux Python 3.12; this is not Mac evidence.
+- Required Mac checks: locked sync; lint/format/tests; build and isolated smoke; own-project init preview/create/validate/rerun preservation.
+- Supplied Mac results: lint/format PASS; 92 tests PASS; wheel/sdist build PASS; installed init/config smoke PASS; own-project validation and rerun preservation PASS. Doctor/tasks/model/MCP/CI remain unimplemented.
+
+### Step 04B clarification — optional token controls
+
+Input/output budgets are independently optional, default null. Added eight tests
+for defaults, independent opt-in, round trips and invalid enabled values. The
+self-hosting project manifest deliberately disables both user budgets; byte and
+path safeguards remain. Mac validation subsequently passed: 92 tests, lint/format, builds, installed smoke and configuration validation.

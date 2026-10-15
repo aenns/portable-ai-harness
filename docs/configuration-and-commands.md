@@ -1,9 +1,9 @@
 # Portable AI Harness — Configuration and command contracts
 
-Design revision: 3
+Design revision: 4
 Checkpoint: Step 03B, section 2
 Date: 15 October 2026
-Status: approved design contracts; commands and schema are not implemented yet.
+Status: approved design contracts. Step 04B implements init, project configuration validation and structural JSON Schema; remaining features/commands are design-only.
 
 Read this with [release-scope.md](release-scope.md) and [architecture.md](architecture.md). The architecture was merged at commit `40476cf`. This document adds configurable feature documentation to that design. Examples are intended test fixtures, not configuration that can be run today. Generated JSON Schema and exact CLI help will become authoritative when implemented and tested.
 
@@ -294,3 +294,27 @@ Managed feature summaries live under the configured directory with feature/sourc
 Review configuration defaults, provider/network boundaries, feature-to-evidence mapping, documentation toggle/catch-up and the difference between short tasks and development services. Examples above parse as JSON; they have not passed an implemented harness schema, since none exists yet. When implemented, test them as shared fixtures through Pydantic validation and generated-schema validation, plus deliberate invalid/denied cases.
 
 This documentation section passes after review/merge, not after execution of the proposed commands. Step 03B's next section covers RelayCart service/data/security/deployment contracts and initial decision records. Step 03C reviews the complete design/checkpoint records before Step 04 code begins.
+
+## Step 04B implementation boundary
+
+See [quickstart](quickstart.md) for the implemented init/config flags and limits.
+ProjectConfig and generated project.schema.json are authoritative for the current
+project-data schema. Additional cross-field and filesystem rules are enforced by
+shared services and tested separately. Unknown fields/versions are rejected.
+The approved Node example is tested as data; its referenced scripts still require
+a real project. Feature schema, doctor, task execution, context/model workflows,
+pack/harness.lock management and MCP remain later increments. Initial writes are
+tested on Linux and require separate Mac acceptance; Windows writes are not yet
+supported. A valid future setting is neither feature availability nor permission.
+
+## Optional token-budget policy
+
+Input and output token budgets are independently optional and default to null
+(disabled). A positive integer explicitly opts into that control; the earlier
+project example deliberately opts in and is not the default. Explicit existing
+numbers are preserved by init until the developer deliberately changes them.
+Our own manifest now explicitly selects null for both budgets.
+Byte/file bounds and path/secret restrictions remain enforced separately.
+Future adapters still respect provider context limits, required API parameters
+and quotas. Configuration data does not imply token-counting/model execution is
+implemented; neither is needed for the existing offline tooling.
