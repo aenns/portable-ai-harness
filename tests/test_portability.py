@@ -103,3 +103,39 @@ def test_doctor_reports_this_execution_platform(tmp_path):
 def test_windows_line_endings_are_normalized_before_control_filtering():
     assert execution._redact("first\r\nsecond\r\n", {}) == "first\nsecond\n"
     assert execution._redact("untrusted\x1b[31m", {}) == "untrusted?[31m"
+
+
+def test_windows_directory_handle_requests_read_access_and_denies_delete_sharing(
+    tmp_path, monkeypatch
+):
+    from portable_ai_harness.core import windows
+
+    calls = []
+    closed = []
+
+    class Kernel:
+        def CreateFileW(self, *args):
+            calls.append(args)
+            return 42
+
+        def GetFileInformationByHandle(self, handle, information):
+            information._obj.attributes = 0x10
+            return True
+
+        def CloseHandle(self, handle):
+            closed.append(handle)
+            return True
+
+    kernel = Kernel()
+    monkeypatch.setattr(windows, "api", lambda: kernel)
+    handle = windows.open_handle(tmp_path, directory=True)
+    try:
+        assert handle == 42
+        _, access, sharing, _, disposition, flags, _ = calls[0]
+        assert access == 0x80000000  # GENERIC_READ; metadata-only access is insufficient.
+        assert sharing == 3  # FILE_SHARE_READ | FILE_SHARE_WRITE; no FILE_SHARE_DELETE.
+        assert disposition == 3  # OPEN_EXISTING.
+        assert flags & 0x02000000 and flags & 0x00200000
+    finally:
+        kernel.CloseHandle(handle)
+    assert closed == [42]

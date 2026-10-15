@@ -80,9 +80,16 @@ def test_report_rejects_junction_without_reading_target(tmp_path):
 def test_pinned_directory_blocks_replacement(tmp_path):
     from portable_ai_harness.core.windows import pinned_directory
 
+    moved = tmp_path / "moved"
     with pinned_directory(tmp_path, (".ai",), create=True) as directory:
         with pytest.raises(OSError):
-            os.rename(directory, tmp_path / "moved")
+            os.rename(directory, moved)
+        # The workspace ancestor must also be pinned, not just the final directory.
+        with pytest.raises(OSError):
+            os.rename(tmp_path, tmp_path.with_name(tmp_path.name + "-moved"))
+    # Verify the denial came from the held handles, not permanently denied ACLs.
+    os.rename(directory, moved)
+    os.rename(moved, directory)
 
 
 def test_windows_init_race_preserves_existing_manifest(tmp_path):

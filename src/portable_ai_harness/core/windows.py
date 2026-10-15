@@ -201,7 +201,8 @@ class Job:
 
 def open_handle(path, *, directory=False, create=False, write=False):
     kernel = api()
-    # Holding parent directory handles without SHARE_DELETE prevents replacement.
+    # A read-access handle without SHARE_DELETE prevents directory replacement.
+    # Metadata-only (zero-access) handles did not enforce this boundary on CI.
     # OPEN_REPARSE_POINT opens the link itself so attributes can reject it.
     if create:
         with private_security() as security:
@@ -209,7 +210,7 @@ def open_handle(path, *, directory=False, create=False, write=False):
     else:
         handle = kernel.CreateFileW(
             str(path),
-            0 if directory else 0x80000000,
+            0x80000000,  # GENERIC_READ for directories as well as files.
             3 if directory else 1,
             None,
             3,

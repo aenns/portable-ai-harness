@@ -1,7 +1,7 @@
 # Operating-system portability and acceptance
 
 Decision: Windows, macOS and Linux are required for the first release.
-Status: implementation prepared; native Windows/macOS CI results pending.
+Status: initial hosted Linux/macOS acceptance passed; Windows correction awaiting native CI rerun.
 This is a development correction, not a stable release announcement.
 
 ## Shared behavior and native boundaries
@@ -61,12 +61,12 @@ package publication, deployment or version increment is required.
 
 | Evidence | Current status |
 | --- | --- |
-| Linux preparation run | 164 passed, 7 native Windows tests skipped; not Windows evidence |
+| Linux preparation after Windows CI correction | 165 passed, 7 native Windows tests skipped; not Windows evidence |
 | Adrian's Mac run before correction | 133 passed, 1 cleanup failure; build correctly skipped |
-| Adrian's Mac corrected run | Pending |
-| Hosted Linux acceptance | Pending |
-| Hosted macOS acceptance | Pending |
-| Hosted Windows acceptance | Pending |
+| Adrian's Mac corrected run | PASS reported for lint/test/build and installed-wheel smoke; cleanup confirmed |
+| Hosted Linux acceptance | PASS reported for 02e7c001; rerun required for the next commit |
+| Hosted macOS acceptance | PASS reported for 02e7c001; rerun required for the next commit |
+| Hosted Windows acceptance | 02e7c001: 165 passed, 2 failed, 4 skipped; correction rerun pending |
 
 Windows-native tests cover assignment refusal before project execution, descendant
 cleanup across a new process group, junction refusal, directory pinning,
@@ -90,3 +90,23 @@ acceptance portion forward so Windows is not deferred beyond the first release.
 
 Scope: these sources inform native implementation choices. Actual compatibility
 claims come from recorded test results, not from documentation alone.
+
+
+## Windows CI correction — 15 October 2026
+
+The first native Windows run at commit 02e7c001d46cc3203d1b3ee710bc88f600d745c3
+exposed a missing Unix FIFO-test guard and ineffective directory pinning. The
+FIFO fixture now skips only on hosts without os.mkfifo; all ordinary setup tests
+and Windows-native filesystem tests still run. This is platform-specific fixture
+selection, not suppression of a supported Windows safety requirement.
+
+Directory opens now request GENERIC_READ instead of metadata-only zero access,
+while continuing to deny FILE_SHARE_DELETE and reject reparse points. A shared
+API-contract regression checks the requested access/share flags on every OS.
+The native test still requires rename denial, additionally verifies the workspace
+ancestor is pinned, and verifies renaming succeeds after handles close. A host
+that denies the required read access fails closed; metadata-only access is not a
+fallback. Native CI must validate the behavior before acceptance is recorded.
+
+The initial Windows run stopped before package build, installed-wheel smoke and
+harness self-check; those steps must pass on the rerun as well as the tests.

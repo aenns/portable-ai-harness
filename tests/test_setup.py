@@ -1,6 +1,7 @@
 """Real filesystem fixtures exercise discovery, precedence, create-only writes and races."""
 
 import json
+import os
 
 import pytest
 
@@ -182,9 +183,8 @@ def test_task_cwd_escape_and_symlink_are_denied(tmp_path):
     assert caught.value.code == 3
 
 
+@pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="POSIX FIFO fixture requires os.mkfifo")
 def test_no_fifo_read_hang(tmp_path):
-    import os
-
     os.mkfifo(tmp_path / "package.json")
     with pytest.raises(SetupError, match="regular file"):
         read_data(tmp_path, "package.json")

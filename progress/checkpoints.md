@@ -98,3 +98,13 @@ Status: cross-platform correction prepared; corrected Mac and all three native C
 - git diff --check passed.
 - Evidence report: 20261015T223240909736Z-8a7bc439d75542378994f4db4f1cf854
 - Hosted Windows, macOS and Linux acceptance remains pending; do not merge yet.
+
+### Step 04C Windows CI correction
+
+- Initial native CI source: 02e7c001d46cc3203d1b3ee710bc88f600d745c3.
+- Hosted Ubuntu and macOS PASS reported by Adrian; Windows: 165 passed, 2 failed, 4 skipped.
+- Failures: unsupported os.mkfifo fixture and ineffective metadata-only directory handles.
+- Correction: Unix capability guard for FIFO only, GENERIC_READ directory handles without delete sharing, shared flag regression, and stronger native pin/unpin assertions.
+- Linux preparation: 165 passed, 7 native Windows tests skipped; lint/format, build and installed-wheel smoke passed. Native Windows rerun is required, including build/smoke/self-check.
+- All three CI jobs on the correction commit remain PENDING. Do not merge until they pass.
+- Version remains 0.1.0.dev2; configuration, token settings and lockfile unchanged.
