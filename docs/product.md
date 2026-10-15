@@ -26,7 +26,7 @@ Python 3.12, uv, Typer and Pydantic
 - Python implements the harness; project-owned argv tasks support other installed languages and infrastructure tooling.
 - Assistant-led and direct-model workflows share context, specifications, checks and evidence; direct-model changes require reviewed local approval.
 - Initial fake/Ollama/OpenAI/Anthropic adapters are planned. Compatibility is tested per adapter/client; universal IDE/model compatibility is not claimed.
-- Local read-only stdio MCP follows the usable core in the first release; installed version, configuration schema and candidate artifacts are versioned.
+- Optional local stdio MCP follows the validated CLI and targets the same supported core capabilities, including reviewed writes/tasks/checkpoints. Read-only is the default; client/approval support is tested and documented. See [MCP amendment](mcp-scope-amendment.md). Installed version, configuration schema and candidate artifacts are versioned.
 - Feature specifications and project conventions guide implementation, tests and review. Documentation supports off/suggest/update modes with reviewed writes.
 - Secret context denial, bounded output/time/token budgets and checkpoint offers are required; approved commands still run with local user privileges.
 - Use candidate harness builds for RelayCart development and capture feedback before stable promotion and public launch.

@@ -26,3 +26,12 @@ Approved design sources:
 - [Harness architecture](https://github.com/aenns/portable-ai-harness/blob/40476cf/docs/architecture.md)
 - [Harness configuration and commands](https://github.com/aenns/portable-ai-harness/blob/99d47a1/docs/configuration-and-commands.md)
 - [RelayCart system architecture, revision 4](https://github.com/aenns/relaycart-docs/blob/f5cf12d/docs/architecture/system.md)
+
+## MCP scope amendment — 15 October 2026
+
+- Decision agreed in conversation on 11 October; recorded before Step 04 implementation.
+- CLI first, one shared core, full supported CLI/MCP capability parity target.
+- Read-only default; reviewed operations require tested human approval and client compatibility.
+- [Amendment](../docs/mcp-scope-amendment.md) defines precedence and acceptance; Step 03's completed checkpoint remains valid.
+- Implementation and compatibility evidence: NOT STARTED; design approval is not a test result.
+- Publication is evidenced by this change's merged PR and clean main verification.

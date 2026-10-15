@@ -1,9 +1,9 @@
 # Step 03A — Approved first-release scope
 
-Scope version: 1
+Scope version: 2
 Decision date: 7 October 2026
 Owner: Adrian Enns
-Status: approved scope recorded and merged at commit 96cc799.
+Status: approved scope; version 1 merged at commit 96cc799, with the MCP scope amendment recorded in this change.
 
 This checkpoint supplements the RelayCart Step-by-Step Build Guide. Where the guide still limits the harness to read-only model consultation or recommends promoting milestones immediately, this approved contract takes precedence. It adds reviewed direct-model patch application and defers stable promotion/public announcements until development use and portfolio readiness are validated. Application implementation has not started. The completed Step 03 design review is recorded separately in RelayCart's design checkpoint.
 
@@ -28,7 +28,7 @@ The initial user is Adrian developing the harness and all six RelayCart reposito
 | Execution | Named build/test/run/check tasks, bounded output/timeouts, process cleanup, explicit start/stop for long-running development servers |
 | Review | Deterministic checks and separately labelled AI review against specification/conventions; human acceptance remains explicit |
 | Git checkpoints | Inspect status before editing; configurable offer of an explicit local checkpoint commit, with reviewed file selection and preservation of existing changes |
-| Integrations | Terminal baseline, tested VS Code workflow, supported Copilot instructions, and optional local read-only MCP bridge tested with one actual client |
+| Integrations | CLI-first shared core with optional local MCP capability parity, tested client/approval compatibility and a read-only default profile; see [MCP amendment](mcp-scope-amendment.md) |
 | Evidence | Feature/run IDs, spec/context/prompt versions or hashes, source state, task outcomes and available model metadata, with structured redacted logs |
 | Documentation | Installation, local build, tools/schema, examples, compatibility, architecture, decisions/tradeoffs, limitations, upgrade and troubleshooting guidance |
 
@@ -54,7 +54,7 @@ Do not automatically install or import remote plugins. Define versioned extensio
 
 Before implementation, inspect Git state and offer a checkpoint when policy calls for it. A checkpoint commits only reviewed intended files. Never silently stage everything, commit sensitive files, push, reset, stash or discard work. Record dirty state and preserve pre-existing work if the user chooses to continue. A checkpoint is recoverability evidence, not a substitute for backups or protection of ignored files.
 
-For MCP v0.1.0, expose read-only inspection/context/documentation tools through local stdio, with shared limits and denials. No MCP source editing or task execution in the initial bridge. The client supplies its model and user interface; MCP is not a model, universal subscription bridge or replacement for host permissions. Operational logging goes to stderr, not protocol stdout.
+For the first stable MCP release, target the same supported core capabilities as the CLI through local stdio, including reviewed source/test/documentation changes, named task execution and local checkpoints. Implement and validate CLI behavior first; expose MCP capabilities incrementally with shared limits and a tested human-approval mechanism. Read-only remains the default profile. See [MCP scope amendment](mcp-scope-amendment.md) for precedence, compatibility and release acceptance. The client supplies its model and user interface; MCP is not a model, universal subscription bridge or replacement for host permissions. Operational logging goes to stderr, not protocol stdout.
 
 ## Dogfooding and improvement agreement
 
@@ -84,12 +84,12 @@ Prepare documentation, case studies and communication assets throughout developm
 
 ## Deferred
 
-Unattended agents, multi-agent orchestration, MCP mutations/execution, plugin marketplace, hosted harness SaaS, real payment/logistics integrations, Kubernetes/service mesh and additional cloud implementations. Preserve useful extension boundaries without implementing these in the initial release.
+Unattended agents, multi-agent orchestration, remote/network MCP hosting, plugin marketplace, hosted harness SaaS, real payment/logistics integrations, Kubernetes/service mesh and additional cloud implementations. Preserve useful extension boundaries without implementing these in the initial release.
 
 ## Step 03A acceptance
 
 - Adrian has agreed this first-release scope in conversation: PASS.
-- Code/test implementation routes, Git checkpoints, standards and read-only MCP boundary are explicit: PASS for design only.
+- Code/test implementation routes, Git checkpoints, standards and shared CLI/MCP approval boundaries are explicit: PASS for design only.
 - Dogfooding and controlled improvement/release policy are explicit: PASS for design only.
 - Scope recorded, reviewed and merged into the Git repository: PASS (commit 96cc799).
 - No implementation, compatibility test, release or deployment is claimed complete.

@@ -1,8 +1,8 @@
 # Portable AI Harness — Configuration and command contracts
 
-Design revision: 2
+Design revision: 3
 Checkpoint: Step 03B, section 2
-Date: 7 October 2026
+Date: 15 October 2026
 Status: approved design contracts; commands and schema are not implemented yet.
 
 Read this with [release-scope.md](release-scope.md) and [architecture.md](architecture.md). The architecture was merged at commit `40476cf`. This document adds configurable feature documentation to that design. Examples are intended test fixtures, not configuration that can be run today. Generated JSON Schema and exact CLI help will become authoritative when implemented and tested.
@@ -161,7 +161,7 @@ This fixture assumes a Node project has actual `lint`, `types`, Vitest-compatibl
 - Endpoint/model selection comes from reviewed settings/explicit user selection, not arbitrary instructions found in source or returned by a model. No silent provider fallback or toolchain/plugin installation.
 - Token budgets include instructions and protocol overhead within the input allowance, reserve output, and fit the selected adapter's declared model limit with headroom. Unknown limits/counts are reported as estimates/unknown; do not promise exact fit. Byte limits remain independent safeguards.
 - `doctor` validates local readiness without running project checks or network calls. Provider/network checks require an explicit selection.
-- Resolve requested read-only MCP enablement separately from the actual server start command. The initial tool set cannot be expanded to mutation/execution merely by editing a string.
+- Resolve requested MCP enablement separately from server startup and effective capability authorization. The example retains the read-only default; the approved design also adds an opt-in reviewed tool-set profile. It enables only implemented/tested capabilities with a trusted approval path; a configuration string alone never grants execution/write permission. See [MCP scope amendment](mcp-scope-amendment.md).
 
 ## Initialization and discovery
 
@@ -261,7 +261,7 @@ These commands are design names to implement incrementally. Do not advertise or 
 | Git checkpoint | `pah checkpoint --dry-run`; explicit interactive checkpoint | Preview intended files and existing staging; no automatic push/reset/stash |
 | Packs/integrations | `pah upgrade --to VERSION --dry-run`, `remove --dry-run`, `adapter export` | Pack ownership and deliberate compatible upgrade, not in-place self-update of the CLI |
 | Documentation | `pah docs pull`; `docs sync --feature ID --dry-run`; `docs sync --accepted --dry-run` | Pull verifies pinned bundle; sync proposes eligible documentation changes |
-| MCP | `pah mcp serve` | Optional local read-only stdio server; model supplied by client |
+| MCP | `pah mcp serve` | Optional local stdio adapter over shared services; read-only default, reviewed capabilities after tested human approval; model normally supplied by client |
 
 Noninteractive mutation without a valid explicit approval mechanism is denied in the initial design. Do not expose a model-settable approval Boolean. Cached approvals become invalid when the proposal/source state changes. A user can invoke one operation at a time; a convenience workflow may orchestrate these later without changing boundaries.
 
@@ -287,7 +287,7 @@ For update mode, sequence code proposal/apply → checks/review → proposed fea
 
 With off/suggest modes, accept implementation based on actual evidence and leave documentation work explicit/pending. Catch-up is a deliberate `docs sync --accepted --dry-run` action against available accepted feature records. Re-enabling the setting does not trigger inference, writes or publication. If off-mode history was local and has been lost, explain the gap and request a reviewed source of truth; do not invent history from commit titles.
 
-Managed feature summaries live under the configured directory with feature/source IDs; duplicate sync is idempotent for unchanged evidence. Preserve human-edited text through owned sections/conflict detection. A changelog edit is proposed with explicit scope, not a silent rewrite. Architectural reasoning/runbooks always require human review. Documentation paths share workspace/secret restrictions and read-only MCP cannot apply updates.
+Managed feature summaries live under the configured directory with feature/source IDs; duplicate sync is idempotent for unchanged evidence. Preserve human-edited text through owned sections/conflict detection. A changelog edit is proposed with explicit scope, not a silent rewrite. Architectural reasoning/runbooks always require human review. Documentation paths share workspace/secret restrictions. Read-only MCP cannot apply updates; the reviewed profile may apply the same approved documentation change sets as the CLI through a supported approval path.
 
 ## Section 2 acceptance and next work
 
