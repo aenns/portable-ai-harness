@@ -25,6 +25,22 @@ def relative_path(value: str) -> str:
         or PureWindowsPath(value).drive
         or ".." in parts
         or any(
+            any(char in part for char in ':<>"|?*')
+            or part.endswith((" ", "."))
+            or part.split(".")[0].upper()
+            in {
+                "CON",
+                "PRN",
+                "AUX",
+                "NUL",
+                "CONIN$",
+                "CONOUT$",
+                *{f"COM{i}" for i in range(1, 10)},
+                *{f"LPT{i}" for i in range(1, 10)},
+            }
+            for part in parts
+        )
+        or any(
             part.lower() in {".git", ".ssh", ".aws", ".azure", ".ai-local"}
             or part.lower()
             in {".env", ".npmrc", ".pypirc", ".netrc", ".dev.vars", "credentials.json"}
@@ -98,6 +114,10 @@ class Task(Data):
     timeout_seconds: Annotated[int, Field(gt=0, le=3600)] = 120
     side_effect: Literal["local-check", "local-build", "local-service"] = "local-check"
     lifecycle: Literal["task", "service"] = "task"
+    max_output_bytes: Annotated[int, Field(gt=0, le=1048576)] = 65536
+    env_allow: list[Annotated[str, Field(pattern=r"^[A-Za-z_][A-Za-z0-9_]*$")]] = Field(
+        default_factory=list, max_length=100
+    )
 
     @model_validator(mode="after")
     def valid_task(self):
@@ -171,6 +191,9 @@ class ProjectConfig(Data):
     def references_and_paths(self):
         if len(set(self.profiles)) != len(self.profiles):
             raise ValueError("profiles must be unique")
+        for names in [self.check_policy.required, self.check_policy.optional]:
+            if len(names) != len(set(names)):
+                raise ValueError("check lists must not repeat tasks")
         if set(self.check_policy.required) - self.tasks.keys():
             raise ValueError("every required check must name a defined task")
         if set(self.check_policy.required) & set(self.check_policy.optional):

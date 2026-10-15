@@ -67,7 +67,19 @@ def main() -> None:
         if manifest.read_bytes() != before:
             raise RuntimeError("Installed rerun changed existing configuration")
         json.loads(run(str(cli), "config", "schema", cwd=directory))
-    print("PASS: installed wheel help/version/init/config outside checkout; temp venv removed.")
+        data = json.loads(manifest.read_text())
+        data["tasks"] = {"test": {"argv": [str(python), "-c", "print('installed task')"]}}
+        data["check_policy"] = {"required": ["test"], "optional": []}
+        manifest.write_text(json.dumps(data))
+        json.loads(run(str(cli), "doctor", "--root", str(project), "--json", cwd=directory))
+        run(str(cli), "run", "test", "--root", str(project), "--dry-run", cwd=directory)
+        if (project / ".ai/local").exists():
+            raise RuntimeError("Installed task preview created reports")
+        run(str(cli), "check", "--root", str(project), "--yes", cwd=directory)
+        evidence = json.loads(run(str(cli), "report", "--root", str(project), cwd=directory))
+        if evidence["status"] != "PASS" or evidence["tasks"][0]["task_exit_code"] != 0:
+            raise RuntimeError("Installed check/report failed")
+    print("PASS: installed wheel init/config/doctor/run/check/report outside checkout.")
 
 
 if __name__ == "__main__":

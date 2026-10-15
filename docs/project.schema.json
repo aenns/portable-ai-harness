@@ -278,6 +278,15 @@
           "title": "Cwd",
           "type": "string"
         },
+        "env_allow": {
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Env Allow",
+          "type": "array"
+        },
         "lifecycle": {
           "default": "task",
           "enum": [
@@ -286,6 +295,13 @@
           ],
           "title": "Lifecycle",
           "type": "string"
+        },
+        "max_output_bytes": {
+          "default": 65536,
+          "exclusiveMinimum": 0,
+          "maximum": 1048576,
+          "title": "Max Output Bytes",
+          "type": "integer"
         },
         "side_effect": {
           "default": "local-check",

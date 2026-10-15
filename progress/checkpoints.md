@@ -68,3 +68,33 @@ Input/output budgets are independently optional, default null. Added eight tests
 for defaults, independent opt-in, round trips and invalid enabled values. The
 self-hosting project manifest deliberately disables both user budgets; byte and
 path safeguards remain. Mac validation subsequently passed: 92 tests, lint/format, builds, installed smoke and configuration validation.
+
+## Step 04C — doctor, bounded tasks/checks and local reports
+
+Date: 15 October 2026
+Status: cross-platform correction prepared; corrected Mac and all three native CI results PENDING.
+
+- Read-only doctor and run/check previews; explicit terminal approval precedes task execution.
+- Named literal argv, selected cwd, revalidated manifest/path/executable, output/time bounds and owned process-group cleanup.
+- Required/optional outcomes, original exits and failures are retained accurately; local reports omit raw output/argv and enforce capacity/size bounds.
+- Preparation: 134 tests, lint/format, package build, installed-wheel workflow and harness self-check passed on Linux Python 3.12; not Mac evidence.
+- Required Mac checks: locked sync; lint/format/tests; package build/smoke; doctor, previews, actual named run/check and report read; ignored local reports and null token budgets verified.
+- Record actual Mac evidence before marking PASS. Model/MCP, service lifecycle, feature acceptance and CI remain unimplemented.
+
+### Step 04C portability correction
+
+- Windows, macOS and Linux are first-release requirements; Windows is not deferred.
+- Initial Mac run: 133 passed, 1 process-cleanup failure; build correctly skipped.
+- Correction adds verified POSIX cleanup, Windows Job Object execution, bounded pipe capture, native safe init/report storage, portable path rules and three-platform acceptance CI.
+- Linux preparation: 164 passed, 7 native Windows tests skipped; lint/format, build and installed-wheel smoke passed. These results are not Windows/macOS evidence.
+- Corrected local Mac run and hosted Linux/macOS/Windows acceptance: PENDING. Record source commit, run URLs and actual outcomes before marking PASS or merging.
+- No new release; version stays 0.1.0.dev2. Token budgets remain optional; the manifest, lockfile and original task approval boundaries are preserved.
+- See docs/portability.md; wider release/security CI remains Step 04D.
+
+### Corrected Mac acceptance — 15 October 2026
+
+- Harness check PASS: lint, test and build exited 0; cleanup confirmed for all three.
+- Installed-wheel init/config/doctor/run/check/report smoke PASS.
+- git diff --check passed.
+- Evidence report: 20261015T223240909736Z-8a7bc439d75542378994f4db4f1cf854
+- Hosted Windows, macOS and Linux acceptance remains pending; do not merge yet.

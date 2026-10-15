@@ -1,9 +1,9 @@
 # Portable AI Harness — Configuration and command contracts
 
-Design revision: 4
+Design revision: 5
 Checkpoint: Step 03B, section 2
 Date: 15 October 2026
-Status: approved design contracts. Step 04B implements init, project configuration validation and structural JSON Schema; remaining features/commands are design-only.
+Status: approved design contracts. Step 04C adds doctor, bounded named run/check and local reports to init/config/schema; remaining features/commands are design-only.
 
 Read this with [release-scope.md](release-scope.md) and [architecture.md](architecture.md). The architecture was merged at commit `40476cf`. This document adds configurable feature documentation to that design. Examples are intended test fixtures, not configuration that can be run today. Generated JSON Schema and exact CLI help will become authoritative when implemented and tested.
 
@@ -318,3 +318,20 @@ Byte/file bounds and path/secret restrictions remain enforced separately.
 Future adapters still respect provider context limits, required API parameters
 and quotas. Configuration data does not imply token-counting/model execution is
 implemented; neither is needed for the existing offline tooling.
+
+## Step 04C implementation boundary
+
+Doctor inspects launcher availability only; it does not execute nested tools or
+probe a provider. Run/check require reviewed named tasks and explicit CLI approval.
+A changed manifest invalidates the preview. Timeouts/output overflow are failures;
+original subprocess exits remain evidence. Optional task failures are explicit but
+do not fail required-check success. No required checks is NOT_CONFIGURED.
+Task.max_output_bytes defaults to 65536 and is capped at 1048576. Task.env_allow
+lists additional environment names beyond a minimal toolchain allowlist; it does
+not hold values. These are backward-compatible optional schema-version-one fields.
+See [quickstart](quickstart.md) and [portability](portability.md) for native Windows,
+macOS and Linux backends, process limits, report capacity and acceptance gates.
+Raw output/argv are not retained in reports. Cleanup must be confirmed; otherwise
+the task fails. Stored outcomes are not feature acceptance or a source snapshot.
+Portability CI is included now; wider release/security CI, services and model/
+feature/MCP workflows remain subsequent work. All three OS jobs must pass before merge.

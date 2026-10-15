@@ -41,3 +41,6 @@ crash.log
 
 # Machine-specific files
 .DS_Store
+
+# Step 04C: local task outcome reports
+/.ai/local/
