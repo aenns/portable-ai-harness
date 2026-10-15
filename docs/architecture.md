@@ -1,22 +1,22 @@
 # Portable AI Harness — Architecture and core interfaces
 
-Design revision: 1
+Design revision: 2
 Checkpoint: Step 03B, section 1
-Date: 7 October 2026
+Date: 15 October 2026
 Status: approved design baseline; no implementation claims.
 
 The approved first-release contract is [release-scope.md](release-scope.md), merged into main at commit `96cc799`. This document defines the harness boundary and shared interfaces. The configuration/command design is recorded in configuration-and-commands.md; RelayCart's system design is recorded in relaycart-docs. Generated schemas and exact executable CLI help remain implementation work.
 
 ## Architecture decision
 
-Build one local Python package with modular internal components, a CLI entry point and an optional read-only MCP entry point. It is an independent developer tool, not a hosted application service or an application dependency. Keep the user-facing CLI small by grouping feature, context, development, validation and configuration operations.
+Build one local Python package with modular internal components, a CLI entry point and an optional local MCP entry point. It is an independent developer tool, not a hosted application service or an application dependency. Keep the user-facing CLI small by grouping feature, context, development, validation and configuration operations.
 
-Both entry points call shared application services; neither duplicates path checks or domain logic. The CLI can invoke reviewed mutation/execution workflows. The initial MCP adapter exposes a smaller read-only surface, not all CLI functions. IDE/assistant integrations invoke these public interfaces or use explicitly exported context.
+Both entry points call shared application services; neither duplicates path checks or domain logic. The CLI can invoke reviewed mutation/execution workflows. MCP targets the same supported core capabilities through structured tools, introduced after CLI validation. Read-only is the default profile; mutations/execution require reviewed capability enablement and a tested human-approval path. See [MCP scope amendment](mcp-scope-amendment.md). IDE/assistant integrations invoke these public interfaces or use explicitly exported context.
 
 ```mermaid
 flowchart TD
     CLI["Developer / terminal CLI"] --> WF["Shared workflow services"]
-    MCP["Optional read-only MCP adapter"] --> WF
+    MCP["Optional local MCP adapter"] --> WF
     WF --> CTX["Specifications, instructions and context"]
     WF --> TOOLS["Workspace, Git, patch and task tools"]
     WF --> MODELS["Optional model adapters"]
@@ -117,7 +117,7 @@ Preserve required acceptance IDs and map supporting task evidence to them. Passi
 | Decision | Reason | Tradeoff / reconsideration trigger |
 |---|---|---|
 | Local modular package | Easy installation and no hosted harness bill | Local permissions/toolchains; revisit when a real shared-service requirement exists |
-| CLI first, read-only MCP | Portable baseline with one tested native tool route | Direct MCP editing/check execution deferred until a coherent approval design is tested |
+| CLI first, shared-core MCP parity | Validate common services through the CLI before adding structured tools | Approval/client compatibility is separately tested; partial clients remain accurately labelled and restricted |
 | Reviewed patch workflow | Useful model-driven implementation with explicit source boundaries | More user review; no promise of unattended feature completion |
 | Project argv tasks | Works across languages and IaC without separate build engines | Requires installed tools and trusted task/code review |
 | JSON schema and pinned packs | Validation, generated reference and deliberate consumer upgrades | Explicit schema migration/compatibility work |
@@ -126,6 +126,6 @@ Preserve required acceptance IDs and map supporting task evidence to them. Passi
 
 ## Review and checkpoint gate
 
-Review that both AI routes use the shared contracts, MCP stays read-only, direct code/test changes are possible, standards/tasks are configurable, approval is tied to the actual proposal, and deterministic evidence cannot be fabricated by a model. Confirm proprietary source/credential exclusions and the limits of task/assistant/plugin control are explicit.
+Review that both AI routes use the shared contracts, CLI and MCP share capability/policy services with explicit, tested approval handling, direct code/test changes are possible, standards/tasks are configurable, approval is tied to the actual proposal, and deterministic evidence cannot be fabricated by a model. Confirm proprietary source/credential exclusions and the limits of task/assistant/plugin control are explicit.
 
 Step 03B section 1 passes when this architecture is reviewed and merged with clean source state. This is design acceptance only. Path/patch failure tests, provider fixtures, task lifecycle checks, real-client MCP tests and clean-install evidence are required during implementation before stable release.
